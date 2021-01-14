@@ -5,6 +5,8 @@ const cors = require('cors');
 const {CLIENT_ORIGIN} = require('./config')
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
+const usersRouter = require('./endpoint_users/users-router');
+const hikesRouter = require('./endpoint_hikes/hikes-router');
 
 const app = express();
 
@@ -23,6 +25,9 @@ app.use(
 app.get('/', (req, res) => {
     res.send('Hello, hike-tracker-api user!');
 })
+
+app.use('/api/users', usersRouter);
+app.use('/api/hikes', hikesRouter);
 
 app.use((error, req, res, next) => {
     let response
