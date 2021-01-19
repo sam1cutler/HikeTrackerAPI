@@ -1,34 +1,24 @@
 const path = require('path');
 const express = require('express');
-const xss = require('xss');
 const hikesService = require('./hikes-service');
-//const { time } = require('console');
-//const { requireAuth } = require('../middleware/jwt-auth');
+const DummyService = require('../middleware/dummy-service');
+const JwtService = require('../middleware/jwt-auth');
 
 const hikesRouter = express.Router();
 const jsonParser = express.json();
 
-const serializeHike = hike => ({
-    id: hike.id,
-    user_id: hike.user_id,
-    name: xss(hike.name),
-    date: hike.date,
-    distance: hike.distance,
-    time: hike.time,
-    elevation: hike.elevation,
-    weather: hike.weather,
-    notes: xss(hike.notes),
-    reference: xss(hike.reference),
-    social_reference: xss(hike.social_reference),
-    steps: hike.steps
-})
-
 hikesRouter
     .route('/')
+    .all(JwtService.requireAuth)
     .get( (req, res, next) => {
-        hikesService.getAllHikes(req.app.get('db'))
+        console.log('In the hikesRouter get request, with req.user = ')
+        console.log(req.user)
+        hikesService.getAllHikes(
+            req.app.get('db'),
+            req.user.id
+        )
             .then(hikes => {
-                res.json(hikes.map(serializeHike))
+                res.json(hikes.map(hikesService.serializeHike))
             })
             .catch(next)
     })
@@ -56,7 +46,7 @@ hikesRouter
                 res
                     .status(201)
                     .location(path.posix.join(req.originalUrl, `/${hike.id}`))
-                    .json(serializeHike(hike))
+                    .json(hikesService.serializeHike(hike))
             })
             .catch(next)
     });
@@ -81,7 +71,7 @@ hikesRouter
             })
     })
     .get( (req, res, next) => {
-        res.json(serializeHike(res.hike))
+        res.json(hikesService.serializeHike(res.hike))
     })
     .delete( (req, res, next) => {
         hikesService.deleteHike(

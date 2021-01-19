@@ -1,14 +1,38 @@
+const xss = require('xss');
+
 const hikesService = {
-    getAllHikes(knex) {
-        return knex
-            .select('*')
-            .from('hike_tracker_hikes')
+    serializeHike(hike) {
+        return {
+            id: hike.id,
+            user_id: hike.user_id,
+            name: xss(hike.name),
+            date: hike.date,
+            distance: hike.distance,
+            time: hike.time,
+            elevation: hike.elevation,
+            weather: hike.weather,
+            notes: xss(hike.notes),
+            reference: xss(hike.reference),
+            social_reference: xss(hike.social_reference),
+            steps: hike.steps
+        }
     },
-    getHikeById(knex, id) {
+    getAllHikes(knex, user_id) {
+        console.log(`Need to filter for user with the id '${user_id}'`)
+        return knex
+            .select('*')
+            .from('hike_tracker_hikes')
+            .where(
+                'user_id',
+                '=',
+                user_id
+            )
+    },
+    getHikeById(knex, hike_id) {
         return knex
             .from('hike_tracker_hikes')
             .select('*')
-            .where('id', id)
+            .where('id', hike_id)
             .first()
     },
     insertHike(knex, newHike) {
