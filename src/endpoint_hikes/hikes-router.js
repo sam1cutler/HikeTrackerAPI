@@ -1,7 +1,6 @@
 const path = require('path');
 const express = require('express');
 const hikesService = require('./hikes-service');
-const DummyService = require('../middleware/dummy-service');
 const JwtService = require('../middleware/jwt-auth');
 
 const hikesRouter = express.Router();
@@ -23,8 +22,9 @@ hikesRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { user_id, name, date, distance, time, elevation, weather, notes, reference, social_reference, steps } = req.body;
-        const checkReqs = { user_id, name, date };
+        console.log('Now really starting the POST request.')
+        const { name, date, distance, time, elevation, weather, notes, reference, social_reference, steps } = req.body;
+        const checkReqs = { name, date };
 
         for (const [key, value] of Object.entries(checkReqs)) {
             if (value == null) {
@@ -36,7 +36,22 @@ hikesRouter
             }
         }
 
-        const newHike = { user_id, name, date, distance, time, elevation, weather, notes, reference, social_reference, steps }
+        console.log('Request cleared cursory check.')
+
+        const newHike = {
+            user_id: req.user.id,
+            name,
+            date,
+            distance,
+            time,
+            elevation,
+            weather,
+            notes,
+            reference,
+            social_reference,
+            steps
+        }
+        console.log(newHike)
 
         hikesService.insertHike(
             req.app.get('db'),
@@ -53,6 +68,7 @@ hikesRouter
 
 hikesRouter
     .route('/:hikeId')
+    .all(JwtService.requireAuth)
     .all( (req, res, next) => {
         hikesService.getHikeById(
             req.app.get('db'),

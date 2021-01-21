@@ -63,6 +63,7 @@ authRouter
                         // use AuthService.createJwt to do just that, and then send the JWT to the client
                         res.send({
                             authToken: AuthService.createJwt(sub, payload),
+                            user_id: dbUser.id,
                         })
                     })
                     .catch(next)

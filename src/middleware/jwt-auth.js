@@ -18,15 +18,15 @@ const JwtService = {
                     error: 'Missing bearer token.'
                 })
         } else {
-            console.log('Token is correctly formatted')
+            console.log('Token is correctly formatted.')
             // token is correctly formatted --> isolate actual token
             bearerToken = AuthToken.slice(7, AuthToken.length)
-            console.log(bearerToken)
+            //console.log(bearerToken)
         }
 
         // Verify that user exists in DB
         try {
-            console.log('Starting to try...')
+            //console.log('Starting to try...')
             const payload = AuthService.verifyJwt(bearerToken);
 
             console.log(payload)
@@ -44,6 +44,7 @@ const JwtService = {
                             })
                     }
                     // if user DOES exist, put user's info in req
+                    console.log('User authenticated, appending user info to request and sending out of jwt-auth.js')
                     req.user = user
                     next()
                 })
