@@ -1,3 +1,19 @@
+BEGIN;
+
+TRUNCATE
+    hike_tracker_hikes,
+    hike_tracker_users
+    RESTART IDENTITY CASCADE;
+
+INSERT INTO hike_tracker_users
+    (email, password)
+VALUES
+    ('jason@gmail.com', '$2a$12$RMZQRtib0KWblIizPt5knuudCQ/xJWartO4wr0wVI9dF7P4tgX3ai'),
+    ('johanna@gmail.com', '$2a$12$k2F2.ERE/Pd4J77D.TADeunrmQiLnxXGw2eBdOHVHiIQriGQ/DRdy'),
+    ('monty@gmail.com', '$2a$12$w.dXgpN2C/3JtjfKeYLfqus7OKmybMB.EEOBRIAJHIBRHLESpuzEm'),
+    ('jeremy@gmail.com', '$2a$12$3m0jbQAs6HH1oZx1.M8NvOTrHk6W1YAvCF8p.wy.htYRCwyUwfW5.'),
+    ('margalit@gmail.com', '$2a$12$RMZQRtib0KWblIizPt5knuudCQ/xJWartO4wr0wVI9dF7P4tgX3ai');
+
 INSERT INTO hike_tracker_hikes
     (user_id, name, date, distance, time, elevation, rating, steps, weather, notes, reference)
 VALUES
@@ -11,3 +27,5 @@ VALUES
     (3, 'Tiger Mountain', '07-Jan-2020', 12, 4.5, 2500, 4, 23000, 'Snow', 'Very glad to have packed microspikes for this one.', 'https://www.wta.org/go-hiking/hikes/blank6'),
     (5, 'Mailbox Peak', '10-Sep-2019', 11, 4.5, 3500, 5, 22000, 'Sun', 'Definitely want to try to do this one again with friends.', 'https://www.wta.org/go-hiking/hikes/blank7'),
     (2, 'Wallace Falls', '01-Jun-2020', 9.5, 2.5, 1000, 4, 17000, 'Sun', 'Very pleasant hike.', 'https://www.wta.org/go-hiking/hikes/blank8');
+
+COMMIT;

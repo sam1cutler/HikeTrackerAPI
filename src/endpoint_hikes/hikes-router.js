@@ -23,7 +23,7 @@ hikesRouter
     })
     .post(jsonParser, (req, res, next) => {
         console.log('Now really starting the POST request.')
-        const { name, date, distance, time, elevation, weather, notes, reference, social_reference, steps } = req.body;
+        const { name, date, distance, time, elevation, rating, steps, weather, notes, reference } = req.body;
         const checkReqs = { name, date };
 
         for (const [key, value] of Object.entries(checkReqs)) {
@@ -45,11 +45,11 @@ hikesRouter
             distance,
             time,
             elevation,
+            rating,
+            steps,
             weather,
             notes,
-            reference,
-            social_reference,
-            steps
+            reference
         }
         console.log(newHike)
 
@@ -99,8 +99,22 @@ hikesRouter
             })
     })
     .patch(jsonParser, (req, res, next) => {
-        const { user_id, name, date, distance, time, elevation, weather, notes, reference, social_reference, steps } = req.body;
-        const updatedHikeInfo = { user_id, name, date, distance, time, elevation, weather, notes, reference, social_reference, steps };
+        const { name, date, distance, time, elevation, rating, steps, weather, notes, reference } = req.body;
+        //const  = { user_id, name, date, distance, time, elevation, rating, steps, weather, notes, reference };
+        const updatedHikeInfo = {
+            user_id: req.user.id,
+            name,
+            date,
+            distance,
+            time,
+            elevation,
+            rating,
+            steps,
+            weather,
+            notes,
+            reference
+        }
+        /*
         const numberOfChanges = Object.values(updatedHikeInfo).filter(Boolean).length;
 
         if (numberOfChanges === 0) {
@@ -110,6 +124,7 @@ hikesRouter
                     error: { message: `Must update some attribute of this logged hike.`}
                 })
         }
+        */
 
         hikesService.updateHike(
             req.app.get('db'),

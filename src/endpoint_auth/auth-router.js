@@ -42,10 +42,10 @@ authRouter
                 console.log('Found the user!')
                 console.log(dbUser)
                 
-                // check that the password in the request body MATCHES the password for the FOUND user in the DB:
-                // return AuthService.comparePasswords(loginUser.password, dbUser.password)
-                //    .then(compareMatch => {
-                        if (loginUser.password !== dbUser.password) {
+                // check that the password in the request body MATCHES the (bcrypted) password for the FOUND user in the DB:
+                return AuthService.comparePasswords(loginUser.password, dbUser.password)
+                    .then(compareMatch => {
+                        if (!compareMatch) {
                             return res
                                 .status(400)
                                 .json({
@@ -63,12 +63,12 @@ authRouter
                         // use AuthService.createJwt to do just that, and then send the JWT to the client
                         res.send({
                             authToken: AuthService.createJwt(sub, payload),
-                            user_id: dbUser.id,
+                            //user_id: dbUser.id,
                         })
                     })
                     .catch(next)
             })
             
-    //})
+    })
 
 module.exports = authRouter;

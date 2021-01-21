@@ -10,11 +10,11 @@ const hikesService = {
             distance: hike.distance,
             time: hike.time,
             elevation: hike.elevation,
+            rating: hike.rating,
+            steps: hike.steps,
             weather: hike.weather,
             notes: xss(hike.notes),
             reference: xss(hike.reference),
-            social_reference: xss(hike.social_reference),
-            steps: hike.steps
         }
     },
     getAllHikes(knex, user_id) {

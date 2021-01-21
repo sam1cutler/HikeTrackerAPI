@@ -1,7 +1,8 @@
 const path = require('path');
 const express = require('express');
 const xss = require('xss');
-const usersService = require('./users-service');
+const UsersService = require('./users-service');
+const { hasUserWithEmail } = require('./users-service');
 
 const usersRouter = express.Router();
 const jsonParser = express.json();
@@ -15,7 +16,7 @@ const serializeUser = user => ({
 usersRouter
     .route('/')
     .get( (req, res, next) => {
-        usersService.getAllUsers(req.app.get('db'))
+        UsersService.getAllUsers(req.app.get('db'))
             .then(users => {
                 res.json(users.map(serializeUser))
             })
@@ -31,19 +32,49 @@ usersRouter
                     .status(400)
                     .json({
                         error: {message: `New user submission must have '${key}' included.`}
-                    })
-            }
-        }
+                    });
+            };
+        };
 
-        usersService.insertUser(
+        const passwordError = UsersService.validatePassword(password);
+
+        if (passwordError) {
+            return res
+                .status(400)
+                .json({
+                    error: passwordError
+                });
+        };
+
+        UsersService.hasUserWithEmail(
             req.app.get('db'),
-            newUser
+            email
         )
-            .then(user => {
-                res
-                    .status(201)
-                    .location(path.posix.join(req.originalUrl, `/${user.id}`))
-                    .json(serializeUser(user))
+            .then(dbHasUserWithEmail => {
+                if (dbHasUserWithEmail) {
+                    return res
+                        .status(400)
+                        .json({
+                            error: `User with that email address already exists.`
+                        })
+                }
+                return UsersService.hashPassword(password)
+                    .then(hashedPassword => {
+                        const newUser = {
+                            email,
+                            password: hashedPassword,
+                        }
+                        return UsersService.insertUser(
+                            req.app.get('db'),
+                            newUser
+                        )
+                            .then(user => {
+                                res
+                                    .status(201)
+                                    .location(path.posix.join(req.originalUrl, `/${user.id}`))
+                                    .json(serializeUser(user))
+                            })
+                    })
             })
             .catch(next)
     });
@@ -51,7 +82,7 @@ usersRouter
 usersRouter
     .route('/:userId')
     .all( (req, res, next) => {
-        usersService.getUserById(
+        UsersService.getUserById(
             req.app.get('db'),
             req.params.userId
         )
@@ -71,7 +102,7 @@ usersRouter
         res.json(serializeUser(res.user))
     })
     .delete( (req, res, next) => {
-        usersService.deleteUser(
+        UsersService.deleteUser(
             req.app.get('db'),
             req.params.userId
         )
@@ -92,7 +123,7 @@ usersRouter
                 })
         }
 
-        usersService.updateUser(
+        UsersService.updateUser(
             req.app.get('db'),
             req.params.userId,
             updatedUserInfo
