@@ -38,7 +38,7 @@ const UsersService = {
             .update(newUserInfo)
     },
     validatePassword(password) {
-        console.log('Validating password in users-service.js')
+        //console.log('Validating password in users-service.js')
         if (password.length < 8) {
             return 'Password must be at least 8 characters in length.'
         }
@@ -57,7 +57,7 @@ const UsersService = {
         return bcrypt.hash(password, 12)
     },
     hasUserWithEmail(db, email) {
-        console.log('Validating uniqueness of user email.')
+        //console.log('Validating uniqueness of user email.')
         return db('hike_tracker_users')
             .where({ email })
             .first()

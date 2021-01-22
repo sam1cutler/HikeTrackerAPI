@@ -10,19 +10,20 @@ hikesRouter
     .route('/')
     .all(JwtService.requireAuth)
     .get( (req, res, next) => {
-        console.log('In the hikesRouter get request, with req.user = ')
-        console.log(req.user)
+        //console.log('In the hikesRouter get request, with req.user = ')
+        //console.log(req.user)
         hikesService.getAllHikes(
             req.app.get('db'),
             req.user.id
         )
             .then(hikes => {
+                //console.log(hikes)
                 res.json(hikes.map(hikesService.serializeHike))
             })
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        console.log('Now really starting the POST request.')
+        //console.log('Now really starting the POST request.')
         const { name, date, distance, time, elevation, rating, steps, weather, notes, reference } = req.body;
         const checkReqs = { name, date };
 
@@ -36,7 +37,7 @@ hikesRouter
             }
         }
 
-        console.log('Request cleared cursory check.')
+        //console.log('Request cleared cursory check.')
 
         const newHike = {
             user_id: req.user.id,
@@ -51,7 +52,7 @@ hikesRouter
             notes,
             reference
         }
-        console.log(newHike)
+        //console.log(newHike)
 
         hikesService.insertHike(
             req.app.get('db'),
