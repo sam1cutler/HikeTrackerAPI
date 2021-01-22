@@ -29,13 +29,16 @@ const JwtService = {
             //console.log('Starting to try...')
             const payload = AuthService.verifyJwt(bearerToken);
 
-            console.log(payload)
+            console.log(`In jwt-auth.js and the payload is '${payload}'`)
+            console.log(`In jwt-auth.js and the payload.sub is '${payload.sub}'`)
 
             AuthService.getUserWithUserEmail(
                 req.app.get('db'),
                 payload.sub,
             )
                 .then(user => {
+                    console.log('Back in jwt-auth, found the following user:')
+                    console.log(user)
                     if (!user) {
                         return res
                             .status(401)

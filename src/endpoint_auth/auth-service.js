@@ -4,8 +4,8 @@ const config = require('../config');
 
 const AuthService = {
     getUserWithUserEmail(db, email) {
-        //console.log('In AuthService, checking for user with that email')
-        //console.log(email)
+        console.log('In AuthService, checking for user with the email:')
+        console.log(email)
         return db('hike_tracker_users')
             .where({ email })
             .first()
