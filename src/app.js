@@ -19,6 +19,7 @@ app.use(morgan(morganOption));
 app.use(helmet());
 
 app.use(cors());
+
 /*
 app.use(
   cors({
@@ -26,7 +27,6 @@ app.use(
   })
 );
 */
-
 
 app.get('/', (req, res) => {
     res.send('Hello, hike-tracker-api user!');
