@@ -123,7 +123,24 @@ usersRouter
                 })
         }
 
-        UsersService.updateUser(
+        if (password) {
+            const passwordError = UsersService.validatePassword(password);
+
+            if (passwordError) {
+                return res
+                    .status(400)
+                    .json({
+                        error: passwordError
+                    });
+            };
+
+            return UsersService.hashPassword(password)
+                .then(hashedPassword => {
+                    updatedUserInfo[password] = hashedPassword
+                })
+        }
+
+        return UsersService.updateUser(
             req.app.get('db'),
             req.params.userId,
             updatedUserInfo
