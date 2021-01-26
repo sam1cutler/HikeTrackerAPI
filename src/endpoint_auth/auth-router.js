@@ -49,7 +49,7 @@ authRouter
                             return res
                                 .status(400)
                                 .json({
-                                    error: `Incorrect password`
+                                    error: `Incorrect password.`
                                 })
                         }
                         console.log('Confirmed matching password, preparing to generate JWT')

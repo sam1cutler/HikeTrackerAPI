@@ -2,7 +2,6 @@ const path = require('path');
 const express = require('express');
 const xss = require('xss');
 const UsersService = require('./users-service');
-//const { hasUserWithEmail } = require('./users-service');
 
 const usersRouter = express.Router();
 const jsonParser = express.json();
@@ -36,16 +35,6 @@ usersRouter
             };
         };
 
-        const passwordError = UsersService.validatePassword(password);
-
-        if (passwordError) {
-            return res
-                .status(400)
-                .json({
-                    error: passwordError
-                });
-        };
-
         UsersService.hasUserWithEmail(
             req.app.get('db'),
             email
@@ -58,6 +47,17 @@ usersRouter
                             error: `User with that email address already exists.`
                         })
                 }
+
+                const passwordError = UsersService.validatePassword(password);
+
+                if (passwordError) {
+                    return res
+                        .status(400)
+                        .json({
+                            error: passwordError
+                        });
+                };
+                
                 return UsersService.hashPassword(password)
                     .then(hashedPassword => {
                         const newUser = {
