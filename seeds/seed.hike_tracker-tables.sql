@@ -8,12 +8,12 @@ TRUNCATE
 INSERT INTO hike_tracker_users
     (id, email, password)
 VALUES
-    (1, 'jason@gmail.com', '$2a$12$RMZQRtib0KWblIizPt5knuudCQ/xJWartO4wr0wVI9dF7P4tgX3ai'),
-    (2, 'johanna@gmail.com', '$2a$12$k2F2.ERE/Pd4J77D.TADeunrmQiLnxXGw2eBdOHVHiIQriGQ/DRdy'),
-    (3, 'monty@gmail.com', '$2a$12$w.dXgpN2C/3JtjfKeYLfqus7OKmybMB.EEOBRIAJHIBRHLESpuzEm'),
-    (4, 'jeremy@gmail.com', '$2a$12$3m0jbQAs6HH1oZx1.M8NvOTrHk6W1YAvCF8p.wy.htYRCwyUwfW5.'),
-    (5, 'margalit@gmail.com', '$2a$12$RMZQRtib0KWblIizPt5knuudCQ/xJWartO4wr0wVI9dF7P4tgX3ai'),
-    (6, 'sampleUser@sampleUser.com', '$2a$12$5TCVA2ImpEvi7PDoxBHHb.wCAjdAFPhRGrKjjjoKtNrz.X3lKv.pi');
+    ('jason@gmail.com', '$2a$12$RMZQRtib0KWblIizPt5knuudCQ/xJWartO4wr0wVI9dF7P4tgX3ai'),
+    ('johanna@gmail.com', '$2a$12$k2F2.ERE/Pd4J77D.TADeunrmQiLnxXGw2eBdOHVHiIQriGQ/DRdy'),
+    ('monty@gmail.com', '$2a$12$w.dXgpN2C/3JtjfKeYLfqus7OKmybMB.EEOBRIAJHIBRHLESpuzEm'),
+    ('jeremy@gmail.com', '$2a$12$3m0jbQAs6HH1oZx1.M8NvOTrHk6W1YAvCF8p.wy.htYRCwyUwfW5.'),
+    ('margalit@gmail.com', '$2a$12$RMZQRtib0KWblIizPt5knuudCQ/xJWartO4wr0wVI9dF7P4tgX3ai'),
+    ('sampleUser@sampleUser.com', '$2a$12$5TCVA2ImpEvi7PDoxBHHb.wCAjdAFPhRGrKjjjoKtNrz.X3lKv.pi');
 
 INSERT INTO hike_tracker_hikes
     (user_id, name, date, distance, time, elevation, rating, steps, weather, notes, reference)

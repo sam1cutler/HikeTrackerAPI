@@ -180,6 +180,7 @@ function cleanTables(db) {
             `TRUNCATE
                 hike_tracker_users,
                 hike_tracker_hikes
+                RESTART IDENTITY
             `
         )
     )
