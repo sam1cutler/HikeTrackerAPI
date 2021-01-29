@@ -66,8 +66,10 @@ authRouter
                             //user_id: dbUser.id,
                         })
                     })
-                    .catch(next)
+                    
             })
+            .catch(next)
+
             
     })
 
