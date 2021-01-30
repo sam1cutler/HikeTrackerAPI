@@ -186,44 +186,13 @@ function cleanTables(db) {
     )
 }
 
-/*
-/// I don't understand how these functions work and 
-/// could not get them to work for me, yet.
-function seedUsers(db, users) {
-    const preppedUsers = users.map(user => ({
-        ...user,
-        password: bcrypt.hashSynch(user.password, 1)
-    }))
-    return db.into('hike_tracker_users').insert(preppedUsers)
-        .then( () => {
-            db.raw(
-                `SELECT setval('hike_tracker_users_id', ?)`,
-                [users[users.length - 1].id],
-            )
-        })
-}
-
-function seedHikesTables(db, users, hikes) {
-    return db.transaction(async trx => {
-        await seedUsers(trx, users)
-        await trx.into('hike_tracker_users').insert(hikes)
-        await trx.raw(
-            `SELECT setval('hike_tracker_hikes_id', ?)`,
-            [hikes[hikes.length - 1].id],
-        )
-    })
-}
-*/
-
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-    //console.log('Attempting to make authHeader in test-helpers.js')
     const token = jwt.sign(
         { user_id: user.id },
         secret, {
             subject: user.email,
             algorithm: 'HS256'
         })
-    //console.log(token)
     return `bearer ${token}`;
 }
 
@@ -234,8 +203,6 @@ module.exports = {
     makeNewHikeObject,
     makeHikesFixtures,
     cleanTables,
-    //seedUsers,
-    //seedHikesTables,
     makeAuthHeader,
     serializeHike,
     serializeUser,

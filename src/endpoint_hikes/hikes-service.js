@@ -18,7 +18,6 @@ const hikesService = {
         }
     },
     getAllHikes(knex, user_id) {
-        //console.log(`Need to filter for user with the id '${user_id}'`)
         return knex
             .select('*')
             .from('hike_tracker_hikes')
@@ -29,7 +28,6 @@ const hikesService = {
             )
     },
     getHikeById(knex, hike_id) {
-        //console.log(`In hikes-service, looking for hike with id '${hike_id}'`)
         return knex
             .from('hike_tracker_hikes')
             .select('*')
@@ -37,8 +35,6 @@ const hikesService = {
             .first()
     },
     insertHike(knex, newHike) {
-        //console.log('Running hikesService.insertHike, and inserting the following:')
-        //console.log(newHike)
         return knex
             .insert(newHike)
             .into('hike_tracker_hikes')

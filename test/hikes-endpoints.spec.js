@@ -70,7 +70,6 @@ describe('Hikes Endpoints', function() {
                         return db.max('id').from('hike_tracker_hikes')
                     })
                         .then( (maxId) => {
-                            //console.log(maxId)
                             return db.raw(`ALTER SEQUENCE hike_tracker_hikes_id_seq RESTART WITH ${maxId[0].max+1};`)
                         })
                         
