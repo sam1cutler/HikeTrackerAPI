@@ -156,7 +156,6 @@ function serializeUser(user) {
     function makeHashedPassword(input) {
         bcrypt.hash(input, 12)
         .then(newPass => {
-            console.log(newPass)
             return newPass
         })
     }

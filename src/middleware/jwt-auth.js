@@ -4,7 +4,6 @@ const JwtService = {
     requireAuth(req, res, next) {
         // Pull out AuthToken from Authorization header of client's request to the protected endpoint
         const AuthToken = req.get('Authorization') || '';
-        //console.log(AuthToken);
 
         // check that format of auth/bearer token is correct
         if (!AuthToken.toLowerCase().startsWith('bearer ')) {
@@ -39,7 +38,6 @@ const JwtService = {
                     next()
                 })
                 .catch(err => {
-                    console.error(err)
                     next(err)
                 })
         } catch(error) {
